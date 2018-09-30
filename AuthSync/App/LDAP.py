@@ -1,4 +1,3 @@
-import os
 from AuthSync import AppConfig
 from ldap3 import Server, Connection, ALL
 
