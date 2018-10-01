@@ -1,7 +1,7 @@
 from AuthSync import AppConfig
 from ldap3 import Server, Connection, ALL
 
-LDAP = Connection(
+LDAPConn = Connection(
     Server(
         host=AppConfig.get("LDAP_HOST", "localhost"),
         port=AppConfig.getint("LDAP_PORT", "389"),
