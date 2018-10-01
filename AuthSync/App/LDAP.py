@@ -1,5 +1,5 @@
 from AuthSync import AppConfig
-from ldap3 import Server, Connection, ALL
+from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES
 
 LDAPConn = Connection(
     Server(
@@ -11,5 +11,7 @@ LDAPConn = Connection(
     ),
     user=AppConfig.get("LDAP_BINDDN", None),
     password=AppConfig.get("LDAP_BINDPASS", None),
-    auto_bind=True
+    auto_bind=True,
+    return_empty_attributes=True
 )
+LDAPAttrs = ALL_ATTRIBUTES
