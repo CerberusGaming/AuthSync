@@ -46,7 +46,7 @@ class Config:
                 return env
 
     def getbool(self, var: str, default_value: bool = None):
-        value = self.get(var, default_value).lower()
+        value = self.get(var, str(default_value).lower())
         if value == 'true':
             return True
         elif value == 'false':
