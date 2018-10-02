@@ -15,22 +15,25 @@ class LDAP:
 
         # LDAP User DN and base filter
         self.__userdn__ = str(AppConfig.get("LDAP_USERBASE", "")).lstrip("\"").rstrip("\"")
-        self.__userfilter__ = str(AppConfig.get("LDAP_USERFILTER", "()"))
+        self.__userfilter__ = str(AppConfig.get("LDAP_USERFILTER", "()")).lstrip("\"").rstrip("\"")
 
         # LDAP Group DN and filter
         self.__groupdn__ = str(AppConfig.get("LDAP_GROUPBASE", "")).lstrip("\"").rstrip("\"")
-        self.__groupfilter__ = str(AppConfig.get("LDAP_GROUPFILTER", "()"))
+        self.__groupfilter__ = str(AppConfig.get("LDAP_GROUPFILTER", "()")).lstrip("\"").rstrip("\"")
 
     def create_user(self):
         pass
 
     def read_user(self, filter: str = None):
+        users = []
         if filter is not None:
             filter = "(&" + filter + self.__userfilter__ + ")"
         else:
             filter = self.__userfilter__
         if self.__ldap__.search(self.__userdn__, filter, attributes=self.__attrs__):
-            return self.__ldap__.response
+            for entry in self.__ldap__.response:
+                users.append(User(entry))
+            return users
         else:
             return None
 
@@ -44,12 +47,16 @@ class LDAP:
         pass
 
     def read_group(self, filter: str = None):
+        groups = []
         if filter is not None:
             filter = "(&" + filter + self.__groupfilter__ + ")"
         else:
             filter = self.__groupfilter__
         if self.__ldap__.search(self.__groupdn__, filter, attributes=self.__attrs__):
-            return self.__ldap__.response
+            for entry in self.__ldap__.response:
+                groups.append(Group(entry))
+
+            return groups
         else:
             return None
 
