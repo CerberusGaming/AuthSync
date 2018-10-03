@@ -32,7 +32,7 @@ class LDAP:
         else:
             return None
 
-    def create_user(self, username, password, display_name, joomla_id, mail):
+    def create_user(self):
         pass
 
     def read_user(self, filter: str = None):
@@ -54,14 +54,27 @@ class LDAP:
     def delete_user(self):
         pass
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def create_group(self, name, joomla_id=None):
         attrs = {
-            'instanceType': '4',
+            'cn': str(name),
             'groupType': '-2147483646',
-            'nTSecurityDescriptor': '',
             'objectCategory': 'CN=Group,CN=Schema,CN=Configuration,' + str(self.__basedn__),
-            'sAMAccountName': str(name),
-            'name': str(name)
         }
         if joomla_id is not None:
             attrs['joomlaID'] = str(joomla_id)

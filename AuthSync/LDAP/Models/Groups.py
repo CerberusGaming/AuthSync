@@ -13,7 +13,7 @@ class Group(object):
         'Name': {
             'loc': 'attributes',
             'get': 'cn',
-            'put': ['cn', 'name', 'sAMAccountName']
+            'put': ['cn']
         },
 
         'MemberOf': {
@@ -34,7 +34,7 @@ class Group(object):
             'put': ['objectSid']
         },
 
-        'JoomlaID':{
+        'JoomlaID': {
             'loc': 'attributes',
             'get': 'joomlaID',
             'put': ['joomlaID']
