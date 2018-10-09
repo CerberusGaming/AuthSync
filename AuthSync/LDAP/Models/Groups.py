@@ -64,6 +64,7 @@ class Group(object):
     GUID = str()
     SID = str()
     # Stats
+    JoomlaID = int()
     WhenCreated = datetime.datetime
     WhenChanged = datetime.datetime
 

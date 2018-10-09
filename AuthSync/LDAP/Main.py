@@ -54,22 +54,6 @@ class LDAP:
     def delete_user(self):
         pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def create_group(self, name, joomla_id=None):
         attrs = {
             'cn': str(name),
@@ -99,8 +83,9 @@ class LDAP:
         else:
             return None
 
-    def update_group(self):
-        pass
+    def update_group(self, dn, changes):
+        response = self.__ldap__.modify(dn, changes)
+        return response
 
     def delete_group(self):
         pass
