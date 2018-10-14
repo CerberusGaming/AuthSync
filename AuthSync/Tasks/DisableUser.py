@@ -10,7 +10,6 @@ class DisableUser:
             self.uac_enabled = 512
             self.uac_disabled = 514
             self.enable_disable_users()
-            print('ping')
 
     def enable_disable_users(self):
         for user in LDAP.read_user():

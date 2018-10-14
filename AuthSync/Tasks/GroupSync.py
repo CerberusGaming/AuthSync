@@ -76,6 +76,5 @@ class GroupSync:
                 ldap_delete_groups = list(ldap_user_groups - ldap_correct_groups)
 
                 if len(ldap_delete_groups) != 0:
-                    print(ldap_delete_groups)
                     for delete_group in ldap_delete_groups:
                         LDAP.delete_user_group(ldap_user_dn, delete_group)
