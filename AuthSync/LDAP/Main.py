@@ -2,6 +2,9 @@ from AuthSync.LDAP.Models.Groups import Group
 from AuthSync.LDAP.Models.Users import User
 from AuthSync.App.LDAP import LDAPConn, LDAPAttrs
 from AuthSync import AppConfig
+from ldap3 import MODIFY_REPLACE
+from ldap3.extend.microsoft.addMembersToGroups import ad_add_members_to_groups
+from ldap3.extend.microsoft.removeMembersFromGroups import ad_remove_members_from_groups
 
 
 class LDAP:
@@ -48,11 +51,18 @@ class LDAP:
         else:
             return None
 
-    def update_user(self):
-        pass
+    def update_user(self, dn, changes):
+        _changes = {}
+        for field, value in changes.items():
+            if not isinstance(value, list):
+                value = [value]
+            _changes[field] = (MODIFY_REPLACE, value)
+        response = self.__ldap__.modify(dn, _changes)
+        return response
 
-    def delete_user(self):
-        pass
+    def delete_user(self, dn):
+        response = self.__ldap__.delete(dn)
+        return response
 
     def create_group(self, name, joomla_id=None):
         attrs = {
@@ -84,8 +94,21 @@ class LDAP:
             return None
 
     def update_group(self, dn, changes):
-        response = self.__ldap__.modify(dn, changes)
+        _changes = {}
+        for field, value in changes.items():
+            if not isinstance(value, list):
+                value = [value]
+            _changes[field] = (MODIFY_REPLACE, value)
+        response = self.__ldap__.modify(dn, _changes)
         return response
 
-    def delete_group(self):
+    def delete_group(self, dn):
+        response = self.__ldap__.delete(dn)
+        return response
+
+    def add_user_group(self, user_dn, group_dn):
+        response = ad_add_members_to_groups(self.__ldap__, user_dn, group_dn)
+        return response
+
+    def delete_user_group(self, user_dn, group_dn):
         pass
