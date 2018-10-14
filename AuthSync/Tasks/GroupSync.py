@@ -1,4 +1,3 @@
-from datetime import datetime
 from AuthSync.Joomla import Joomla
 from AuthSync.LDAP import LDAP
 
@@ -65,7 +64,19 @@ class GroupSync:
             ldap_user = LDAP.read_user("(joomlaID=" + str(user_id) + ")")
             if ldap_user is not None and len(ldap_user) == 1:
                 ldap_user = ldap_user[0]
-                tdelta = datetime.utcnow().replace(tzinfo=None) - ldap_user.WhenChanged.value.replace(tzinfo=None)
-                if tdelta.seconds / 960 > 1:
-                    ldap_user_groups = ldap_user.MemberOf.value
-                    print(ldap_user_groups)
+                ldap_user_dn = ldap_user.DN.value
+
+                ldap_user_groups = set(ldap_user.MemberOf.value) - set(self._joomla_ldap_groups)
+                ldap_user_groups = set(ldap_user.MemberOf.value) - ldap_user_groups
+                ldap_correct_groups = []
+                for group_id in user_groups:
+                    ldap_group = LDAP.read_group("(joomlaID=" + str(group_id) + ")")
+                    if ldap_group is not None:
+                        ldap_correct_groups.append(ldap_group[0].DN.value)
+                ldap_correct_groups = set(ldap_correct_groups)
+                ldap_delete_groups = list(ldap_user_groups - ldap_correct_groups)
+
+                if len(ldap_delete_groups) != 0:
+                    print(ldap_delete_groups)
+                    for delete_group in ldap_delete_groups:
+                        LDAP.delete_user_group(ldap_user_dn, delete_group)

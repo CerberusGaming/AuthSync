@@ -111,4 +111,5 @@ class LDAP:
         return response
 
     def delete_user_group(self, user_dn, group_dn):
-        pass
+        response = ad_remove_members_from_groups(self.__ldap__, user_dn, group_dn, True)
+        return response
