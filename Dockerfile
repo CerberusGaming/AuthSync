@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.7-slim
 
 # MySql / MariaDB Config
 ENV MYSQL_USER "mysql_user"
@@ -25,4 +25,14 @@ ENV LDAP_USERFILTER ""
 ENV LDAP_GROUPBASE ""
 ENV LDAP_GROUPFILTER ""
 
-ENV LDAP_ ""
+ENV LOG_LEVEL ""
+
+WORKDIR /usr/src/app
+RUN apt-get update && apt-get -y install git \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/CerberusGaming/AuthSync.git .
+
+RUN pip install -r requirements.txt
+
+CMD ["python", "run.py"]
