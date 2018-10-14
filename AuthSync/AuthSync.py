@@ -17,6 +17,7 @@ async def coro(task, timer):
 def run():
     path = os.path.normpath(os.getcwd() + "/AuthSync/Tasks/*")
     import_files = glob.glob(path)
+
     for file in import_files:
         if not os.path.basename(file).startswith('__'):
             file = file.strip('.py').replace(os.path.normpath(os.getcwd()), '')

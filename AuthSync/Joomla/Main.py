@@ -1,5 +1,4 @@
 import datetime
-import pprint
 from AuthSync.App.Storage import Session
 from AuthSync.Joomla.Models.Groups import Group, GroupMap
 from AuthSync.Joomla.Models.Users import User
@@ -75,7 +74,12 @@ class JoomlaUser(object):
 
 
 class Joomla:
-    def __init__(self):
+    def __init__(self, init=False):
+        self.init = init
+        if init:
+            self.sync()
+
+    def sync(self):
         self.Users = {}
         self.Groups = {}
         self.GroupMap = {}
@@ -104,6 +108,7 @@ class Joomla:
                 groups.append(self.Groups[group])
             user.Groups = groups
             self.Users[user.ID] = user
+        self.init = True
 
     def __get_users__(self):
         session = Session()

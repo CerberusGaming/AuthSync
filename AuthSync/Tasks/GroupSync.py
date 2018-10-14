@@ -6,7 +6,12 @@ async_timer = 1
 
 class GroupSync:
     def __init__(self):
-        print('potato')
+        if Joomla.init:
+            self.create_groups()
+            self.delete_groups()
+            print('ping')
+
+    def create_groups(self):
         joomla_groups = Joomla.Groups
         for group in joomla_groups:
             group = joomla_groups[group]
@@ -17,3 +22,10 @@ class GroupSync:
                 print(LDAP.update_group(ldap_group[0].DN, {'joomlaID': group.ID}))
             else:
                 pass
+
+    def delete_groups(self):
+        print(Joomla.Groups.keys())
+        for group in LDAP.read_group():
+            if group.JoomlaID in Joomla.Groups.keys():
+                print(group)
+        pass
