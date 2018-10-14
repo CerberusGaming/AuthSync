@@ -1,7 +1,7 @@
 from AuthSync.Joomla import Joomla
 from AuthSync.LDAP import LDAP
 
-async_timer = 1
+async_timer = 60
 
 
 class GroupSync:
@@ -11,12 +11,11 @@ class GroupSync:
             for group in LDAP.read_group("(joomlaID=*)"):
                 if group is not None:
                     self._joomla_ldap_groups.append(group.DN.value)
-            # self.create_groups()
-            # self.delete_groups()
-            # self.update_users()
-            # self.map_users()
+            self.create_groups()
+            self.delete_groups()
+            self.update_users()
+            self.map_users()
             self.demap_users()
-            print('ping')
 
     def create_groups(self):
         joomla_groups = Joomla.Groups
