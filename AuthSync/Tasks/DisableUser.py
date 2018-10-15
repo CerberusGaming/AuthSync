@@ -16,9 +16,10 @@ class DisableUser:
             user_dn = user.DN.value
             user_jid = user.JoomlaID.value
             user_uac = user.UAC.value
-            if user_jid is not None and user_uac in [self.uac_disabled, self.uac_enabled]:
-                joomla_user = Joomla.Users[user_jid]
-                if joomla_user.Block:
-                    LDAP.update_user(user_dn, {'userAccountControl': self.uac_disabled})
-                else:
-                    LDAP.update_user(user_dn, {'userAccountControl': self.uac_enabled})
+            if user_jid is not None and user_uac is not None:
+                if user_uac in [self.uac_disabled, self.uac_enabled]:
+                    joomla_user = Joomla.Users[user_jid]
+                    if joomla_user.Block:
+                        LDAP.update_user(user_dn, {'userAccountControl': self.uac_disabled})
+                    else:
+                        LDAP.update_user(user_dn, {'userAccountControl': self.uac_enabled})
