@@ -8,9 +8,11 @@ class GroupSync:
     def __init__(self):
         if Joomla.init:
             self._joomla_ldap_groups = []
-            for group in LDAP.read_group("(joomlaID=*)"):
-                if group is not None:
-                    self._joomla_ldap_groups.append(group.DN.value)
+            ldap_groups = LDAP.read_group("(joomlaID=*)")
+            if ldap_groups is not None:
+                for group in ldap_groups:
+                    if group is not None:
+                        self._joomla_ldap_groups.append(group.DN.value)
             self.create_groups()
             self.delete_groups()
             self.update_users()
